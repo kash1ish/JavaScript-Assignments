@@ -222,3 +222,341 @@ function numberCheck(input){
 }
 
 console.log(numberCheck({ a: 1, b: 2, c: 3 }))
+
+//INTERMEDIATE QUESTIONS
+
+//1. sum all transactions per user 
+function sumPerUser(input){
+    const result = {};
+    for(let obj of input){
+        const {user, amount} = obj
+        if(result[user]){
+            result[user] += amount;
+        }else{
+            result[user] = amount;
+        }
+    }
+    return result
+}
+
+console.log(sumPerUser([
+  { user: "A", amount: 100 },
+  { user: "B", amount: 200 },
+  { user: "A", amount: 50 }
+]))
+
+//2. transform api response to object
+function apiResponse(input){
+    const result = {};
+    for(let obj of input){
+        result[obj.id] = obj.name;
+    }
+    return result;
+}
+
+console.log(apiResponse([
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" }
+]))
+
+//3. remove falsy values from object
+function removeFalsy(input){
+    for(let key in input){
+        if(!input[key]){
+            delete input[key];
+        }
+    }
+    return input;
+}
+console.log(removeFalsy({ a: 0, b: null, c: "hello", d: undefined, e: 5 }))
+
+//4. check for permissions from roles
+function checkRole(roles, checkrole, action){
+    if(!roles[checkRole]){
+        return false;
+    }
+    else{
+        roles[checkRole].includes(action)
+    }    
+}
+
+console.log(checkRole(
+    { admin:["read","write"], user:["read"], staff: ["write"]}
+    ,"user","write"))
+
+//5. transform array of orders into revenue per category
+function revenuePerCategory(input){
+    const result = {};
+    for(let obj of input){
+        const {category, price} = obj;
+        if(result[category]){
+            result[category] += price;
+        }
+        else{
+            result[category] = price;
+        }
+    }
+    return result;
+}
+
+console.log(revenuePerCategory([
+  { id: 1, category: "electronics", price: 100 },
+  { id: 2, category: "clothes", price: 50 },
+  { id: 3, category: "electronics", price: 200 }
+]))
+
+//6. remove duplicate object by id
+function removeDuplicates(input){
+    const result = [];
+    const seen = {};
+    for(let obj of input){
+        if(!seen[obj.id]){
+            seen[obj.id] = true;
+            result.push(obj);
+        }
+    }
+    return result;
+}
+
+console.log(removeDuplicates([
+  { id: 1, name: "A" },
+  { id: 2, name: "B" },
+  { id: 1, name: "A" }
+]))
+
+//7. chunk obj enteries into groups of size
+function chunkObject(input, size){
+    let chunk = [];
+    let result = [];
+    const entries = Object.entries(input);
+
+    for(let entry of entries){
+        chunk.push(entry);
+        if(chunk.length === size){
+            result.push(chunk);
+            chunk = [];
+        }
+    }
+    if(chunk.length > 0){
+        result.push(chunk)
+    }
+    return result;
+}
+
+console.log(chunkObject({ a: 1, b: 2, c: 3, d: 4 }, 2))
+
+//7.1 find longest string among object values
+function longestString(input){
+    let maxLength = -Infinity;
+    let longeststr = '';
+    for(let key in input){
+        if(input[key].length > maxLength){
+            maxLength = input[key].length;
+            longeststr = input[key];
+        }
+    }
+    return longeststr;
+}
+
+console.log(longestString({ a: "apple", b: "banana", c: "kiwi" }))
+
+//8.Convert the object where languages are the top-level keys, and inside each are 
+// translation strings by key into an object where translation keys are the 
+// top-level keys, and inside each you store values per language [HARD**]
+
+function topLevelKeys(input){
+    const result = {};
+    for(let lang in input){
+        const translations = input[lang];
+
+        for(let word in translations){
+            if(!result[word]){
+                result[word] = {};
+            }
+            result[word][lang] = translations[word]
+        }
+    }
+    return result;
+}
+
+console.log(topLevelKeys({
+  en: { hello: "Hello", bye: "Goodbye" },
+  fr: { hello: "Bonjour", bye: "Au revoir" },
+  es: { hello: "Hola" }
+}))
+
+//op => {
+//   hello: { en: "Hello", fr: "Bonjour", es: "Hola" },
+//   bye: { en: "Goodbye", fr: "Au revoir" }
+// }
+
+
+//9. build index of ids grouped by category 
+function groupBycategory(input){
+    const result = {};
+    for(let obj of input){
+        const {id, category} = obj;
+        if(result[category]){
+            result[category].push(id);
+        }else{
+            result[category] = [id];
+        }
+    }
+    return result;
+}
+
+console.log(groupBycategory([
+  { id: 1, category: "fruit" },
+  { id: 2, category: "veggie" },
+  { id: 3, category: "fruit" }
+]))
+
+//10. remove deeply nested key from object
+function deepNested(input){
+    delete input.a.b.c;
+    return input
+}
+
+console.log(deepNested({ a: { b: { c: 1, d: 2 } } }))
+
+//11. check if 2 objects are deeply equal
+function deeplyEqual(input1, input2){
+    if(JSON.stringify(input1) === JSON.stringify(input2)){
+        return true;
+    }
+    return false
+}
+
+console.log(deeplyEqual({ a: { x: 1, y: 2 } }, { a: { x: 1, y: 2 } }))
+
+//12. deep flatten nested arrays inside object
+function deepFlatten(input){
+    const result = {};
+    for(let key in input){
+        result[key] = input[key].flat(Infinity);
+    }
+    return result;
+}
+
+console.log(deepFlatten({ a: [1, [2, [3]]], b: [4, [5]] }))
+
+//13. find most repeated word across categories
+function repeatedWords(input){
+    const arr =  Object.values(input).flat();
+    const freq = {};
+    for(let str of arr){
+        if(freq[str]){
+            freq[str] += 1;
+        }else{
+            freq[str] = 1
+        }
+    }
+    let maxCount = -Infinity;
+    let maxWord = " ";
+    for(let key in freq){
+        if(freq[key] > maxCount){
+            maxCount = freq[key];
+            maxWord = key;
+        }
+    }
+    return maxWord;
+}
+
+console.log(repeatedWords({ fruits: ["apple","apple","banana"], drinks: ["apple","tea"] }))
+
+//14. find intersection of all arrays in object
+function intersection(input){
+    const arrays = Object.values(input);
+    let common = arrays[0];
+    for(let i=1;i<arrays.length;i++){
+        common = common.filter(val => arrays[i].includes(val));
+    }
+    return common;
+}
+
+console.log(intersection({ a: [1,2,3], b: [2,3,4], c: [3,4,5] }))
+
+//15. deeply merge 2 nested objects
+function deepmergeObjects(input1, input2){
+    let result = {...input1};
+    
+    for(let key in input2){
+        if(input1[key] && typeof input1[key]=== "object" && typeof input2 === "object"){
+            result[key] = deepmergeObjects(input1[key], input2[key]);
+        }
+        else{
+            result[key] = input2[key]
+        }
+    }
+    return result
+}
+console.log(deepmergeObjects( { x: 1, y: 2 } , { y: 3, z: 4 } ))
+
+//16. nested object destructuring
+function objDestructure(input){
+    for(let key in input){
+        if(input[key] && typeof input[key] === 'object'){
+            objDestructure(input[key]);
+        }else{
+           console.log(input[key]);
+        }
+    }
+}
+function objDestructure(input){
+    const {user: {profile: {name, age}}} = input;
+    console.log(name, age)
+}
+
+console.log(objDestructure({ user: { profile: { name: "Alice", age: 25 } } }))
+
+//17. find top n keys by value
+function topKeys(input, n){
+    const arr = Object.entries(input)
+    arr.sort((a,b) => b[1] - a[1]);
+    
+    return arr.slice(0, n).map(item => item[0]);
+}
+
+console.log(topKeys({ a: 10, b: 50, c: 30, d: 40 }, 2))
+
+//18. sort array of objects by name then age
+function sortUsers(input){
+    return input.sort((a, b)=>{
+        if(a.name < b.name) return -1
+        if(a.name > b.name) return 1
+
+        return a.age - b.age
+    })
+}
+
+console.log(sortUsers([
+  { name: "Alice", age: 30 },
+  { name: "Bob", age: 25 },
+  { name: "Alice", age: 22 }
+]))
+
+//19. reconcile 2 lists (missing + extra items)
+function reconcile(expected, actual){
+    const result = {};
+    result["extra"] = actual.filter(val => !expected.includes(val));
+    result["missing"] = expected.filter(val => !actual.includes(val));
+    return result;
+}
+
+console.log(reconcile(["a","b","c"],["b","c","d"]))
+
+//20 merge 2 objects
+function mergeObjects(input1, input2) {
+    let result = {};
+    for(let key in input1){
+        result[key] = input1[key]
+    }
+    
+    for(let key in input2){
+        result[key] = input2[key]
+    }
+    return result
+}
+
+console.log(mergeObjects({ a: 10, b: 20 },
+{ a: 5, c: 15 }))
