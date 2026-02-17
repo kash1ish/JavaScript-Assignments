@@ -17,6 +17,18 @@
 
 function getPrimesUpTo100() {
   // Your code here
+  let arr=[];
+  for(let n=2; n <= 100; n++){
+    let isPrime = true;
+    for(let i=2; i<= Math.sqrt(n); i++){
+      if(n % i===0){
+        isPrime = false;
+        break;
+      }
+    }
+    if(isPrime) arr.push(n);
+  }
+  return arr;
 }
 
 module.exports = { getPrimesUpTo100 };

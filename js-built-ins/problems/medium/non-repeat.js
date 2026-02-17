@@ -22,5 +22,18 @@
 */
 function nonrepeat(str) {
   // Your code here
+  const freq = {}
+
+  for(let char of str){
+    freq[char] = (freq[char] || 0) + 1;
+  }
+
+  for(let key in freq){
+    if(freq[key] === 1){
+      return key;
+    }
+  }
+
+  return null;
 }
 module.exports = nonrepeat;
