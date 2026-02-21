@@ -6,3 +6,20 @@
 //  - HH:MM::SS (Eg. 13:45:23)
 
 //  - HH:MM::SS AM/PM (Eg 01:45:23 PM)
+
+setInterval(()=>{
+    const date = new Date();
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    let ampm = hours >= 12? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours === 0? 12 : hours;
+    
+    hours = hours.toString().padStart(2,'0')
+    minutes = minutes.toString().padStart(2,'0')
+    seconds = seconds.toString().padStart(2, '0')
+
+    console.log(`${hours}:${minutes}:${seconds} ${ampm}`)
+},1000)
